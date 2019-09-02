@@ -4,6 +4,9 @@ import com.uddernetworks.bfjvm.brainfuck.DefaultBrainfuckInterpreter;
 import com.uddernetworks.bfjvm.bytecode.BrainfuckCompiler;
 import com.uddernetworks.bfjvm.bytecode.DefaultBrainfuckCompiler;
 import com.uddernetworks.bfjvm.bytecode.DefaultClassCreator;
+import com.uddernetworks.bfjvm.utils.Commandline;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -11,6 +14,8 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 
 public class BFJVM {
+
+    private static Logger LOGGER = LoggerFactory.getLogger(BFJVM.class);
 
     public static void main(String[] args) throws IOException {
         var compiler = new DefaultBrainfuckCompiler();
@@ -27,7 +32,13 @@ public class BFJVM {
             bytes[i] = byteList.get(i);
         }
 
-        Files.write(Paths.get("E:\\BFJVM\\out.class"), bytes, StandardOpenOption.TRUNCATE_EXISTING);
+        var outPath = Paths.get("out.class");
+        Files.write(outPath, bytes, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
+
+        LOGGER.info("javap out.class:");
+        LOGGER.info(Commandline.runCommand(true, "javap out.class"));
+        LOGGER.info("javap -verbose out.class:");
+        LOGGER.info(Commandline.runCommand(true, "javap", "-verbose", "out.class"));
     }
 
 }
