@@ -127,8 +127,24 @@ public class DefaultClassCreator implements ClassCreator {
         /////////////// Numerous bytes making up method definitions
 
 
-        pushBytes(0x0, 0x09, 0x0, 0x13, 0x0, 0x14);
-        pushBytes(0x0, 0x0);
+        pushBytes(0x0, 0x09);
+        pushBytes(0x0, 0x13, 0x0, 0x14); // main ([Ljava/lang/String;)
+        pushBytes(0x0, 0x01); // attribute size = 1
+        pushBytes(0x0, 0x15); // Code Attribute ( this is index #21 in our constant pool )
+        pushBytes(0x0, 0x0, 0x0, 0x15); // Code Attribute size of 21 bytes.
+
+        // 21 bytes of code attribute:
+        pushBytes(0x0, 0x02, 0x0, 0x1); // Max stack size of 2, and Max local var size of 1
+        pushBytes(0x0, 0x0, 0x0, 0x09); // Size of code. 9 bytes
+
+        // The actual machine instructions:
+        pushBytes(0xb2, 0x0, 0x0b); // b2 = getstatic, 000b = index #11 in constant pool ( out )
+        pushBytes(0x12, 0x09); // 12 = ldc ( load constant ), 09 = index #19 ( Hello World )
+        pushBytes(0xb6, 0x0, 0x0f); // b6 = invokevirtual, 000f = index #15 ( method println )
+        pushBytes(0xb1); // return void
+
+        pushBytes(0x0, 0x0); // Exception table of size 0
+        pushBytes(0x0, 0x0); // Attribute count for this attribute of 0
 
         ///////////////
 
