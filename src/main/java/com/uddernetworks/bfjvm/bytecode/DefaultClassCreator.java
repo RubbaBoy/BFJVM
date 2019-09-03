@@ -1,6 +1,9 @@
 package com.uddernetworks.bfjvm.bytecode;
 
+import com.uddernetworks.bfjvm.bytecode.chunks.clazz.ClassInfo;
 import com.uddernetworks.bfjvm.bytecode.chunks.constant.ConstantPool;
+import com.uddernetworks.bfjvm.bytecode.chunks.fields.Fields;
+import com.uddernetworks.bfjvm.bytecode.chunks.interfase.InterfaceInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +12,9 @@ public class DefaultClassCreator implements ClassCreator {
 
     private String name;
     private List<Byte> bytes = new ArrayList<>();
+    private ClassInfo classInfo;
+    private InterfaceInfo interfaceInfo;
+    private Fields fields;
 
     public DefaultClassCreator() {
 
@@ -17,6 +23,21 @@ public class DefaultClassCreator implements ClassCreator {
     @Override
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public void setClassInfo(ClassInfo classInfo) {
+        this.classInfo = classInfo;
+    }
+
+    @Override
+    public void setInterfaceInfo(InterfaceInfo interfaceInfo) {
+        this.interfaceInfo = interfaceInfo;
+    }
+
+    @Override
+    public void setFields(Fields fields) {
+        this.fields = fields;
     }
 
     @Override
@@ -150,25 +171,31 @@ public class DefaultClassCreator implements ClassCreator {
 
         //<editor-fold desc="Class Info">
         // This class' access modifiers (Ie. public)
-        pushBytes(0x0, 0x21);
+//        pushBytes(0x0, 0x21);
+//
+//        // Index of this class in constant pool
+//        pushBytes(0x0, 0x01);
+//
+//        // Index of this class' super class in constant pool
+//        pushBytes(0x0, 0x0);
 
-        // Index of this class in constant pool
-        pushBytes(0x0, 0x01);
+        pushBytes(classInfo.getBytes());
 
-        // Index of this class' super class in constant pool
-        pushBytes(0x0, 0x0);
         //</editor-fold>
 
         //<editor-fold desc="Interfaces">
         // Number of interfaces
-        pushBytes(0x0, 0x0);
+//        pushBytes(0x0, 0x0);
+        pushBytes(interfaceInfo.getBytes());
 
         // Numerous bytes making up interface definitions
         //</editor-fold>
 
         //<editor-fold desc="Fields">
         // Number of fields in this class
-        pushBytes(0x0, 0x0);
+//        pushBytes(0x0, 0x0);
+
+        pushBytes(fields.getBytes());
 
         /////////////// Numerous bytes making up field definitions
 
@@ -189,8 +216,8 @@ public class DefaultClassCreator implements ClassCreator {
 //        pushBytes(/* public static */ 0x0, 0x09);
 //        pushBytes(0x0, 0x13, 0x0, 0x14); // main ([Ljava/lang/String;)
 //        pushBytes(0x0, 0x01); // attribute size = 1
-//        pushBytes(0x0, 0x15); // Code Attribute ( this is index #21 in our constant pool )
-//        pushBytes(0x0, 0x0, 0x0, 0x15); // Code Attribute size of 21 bytes.
+//        pushBytes(0x0, 0x15); // Code AccessModifier ( this is index #21 in our constant pool )
+//        pushBytes(0x0, 0x0, 0x0, 0x15); // Code AccessModifier size of 21 bytes.
 //
 //        // 21 bytes of code attribute:
 //        pushBytes(0x0, 0x02, 0x0, 0x1); // Max stack size of 2, and Max local var size of 1
@@ -203,7 +230,7 @@ public class DefaultClassCreator implements ClassCreator {
 //        pushBytes(0xb1); // return void
 //
 //        pushBytes(0x0, 0x0); // Exception table of size 0
-//        pushBytes(0x0, 0x0); // Attribute count for this attribute of 0
+//        pushBytes(0x0, 0x0); // AccessModifier count for this attribute of 0
 //
 //
 //        // <clinit>
@@ -211,8 +238,8 @@ public class DefaultClassCreator implements ClassCreator {
 //        pushBytes(/* <clinit> */ 0x0, 0x19, /* ()V */ 0x0, 0x1a); // <clinit> ()V
 //        pushBytes(0x0, 0x01); // attribute size = 1
 //
-//        pushBytes(0x0, 0x15); // Code Attribute ( this is index #21 in our constant pool )
-//        pushBytes(0x0, 0x0, 0x0, 0x14); // Code Attribute size of 20 bytes.
+//        pushBytes(0x0, 0x15); // Code AccessModifier ( this is index #21 in our constant pool )
+//        pushBytes(0x0, 0x0, 0x0, 0x14); // Code AccessModifier size of 20 bytes.
 //
 //        // 20 bytes of code attribute:
 //        pushBytes(0x0, 0x01, 0x0, 0x0); // Max stack size of 2, and Max local var size of 1
@@ -225,7 +252,7 @@ public class DefaultClassCreator implements ClassCreator {
 //        pushBytes(/* return */ 0xb1);
 //
 //        pushBytes(0x0, 0x0); // Exception table of size 0
-//        pushBytes(0x0, 0x0); // Attribute count for this attribute of 0
+//        pushBytes(0x0, 0x0); // AccessModifier count for this attribute of 0
 
 
         ///////////////

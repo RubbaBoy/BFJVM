@@ -1,7 +1,13 @@
 package com.uddernetworks.bfjvm.bytecode;
 
 import com.uddernetworks.bfjvm.brainfuck.DefaultBrainfuckInterpreter;
+import com.uddernetworks.bfjvm.bytecode.chunks.clazz.ClassAccessModifier;
+import com.uddernetworks.bfjvm.bytecode.chunks.clazz.ClassInfo;
 import com.uddernetworks.bfjvm.bytecode.chunks.constant.*;
+import com.uddernetworks.bfjvm.bytecode.chunks.fields.Field;
+import com.uddernetworks.bfjvm.bytecode.chunks.fields.FieldAccessModifier;
+import com.uddernetworks.bfjvm.bytecode.chunks.fields.Fields;
+import com.uddernetworks.bfjvm.bytecode.chunks.interfase.InterfaceInfo;
 
 public class DefaultBrainfuckCompiler implements BrainfuckCompiler {
 
@@ -13,6 +19,7 @@ public class DefaultBrainfuckCompiler implements BrainfuckCompiler {
         var classCreator = new DefaultClassCreator();
         classCreator.setName("Brainfuck");
 
+        //// Constant Pool
         var thisClass = new ClassConstant(new Utf8Constant("HelloWorld"));
 
         var objectClass = new ClassConstant(new Utf8Constant("java/lang/Object"));
@@ -38,6 +45,19 @@ public class DefaultBrainfuckCompiler implements BrainfuckCompiler {
 
         var helloWorldClass = new ClassConstant(new Utf8Constant("com/uddernetworks/bfjvm/HelloWorld"));
         var fieldRefTape = new FieldrefConstant(helloWorldClass, tapeByteArrayNAT);
+
+
+        //// Class Info
+        classCreator.setClassInfo(new ClassInfo(thisClass, null, ClassAccessModifier.PUBLIC));
+
+        //// Interface Info
+        classCreator.setInterfaceInfo(new InterfaceInfo());
+
+        //// Fields
+        var fields = new Fields();
+        classCreator.setFields(fields);
+
+        fields.addField(new Field(tapeUtf, byteArrayUtf, FieldAccessModifier.PRIVATE, FieldAccessModifier.STATIC));
 
         return classCreator.create();
     }

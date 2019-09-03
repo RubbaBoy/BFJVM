@@ -1,10 +1,19 @@
 package com.uddernetworks.bfjvm.bytecode;
 
+import com.uddernetworks.bfjvm.bytecode.chunks.clazz.ClassInfo;
 import com.uddernetworks.bfjvm.bytecode.chunks.constant.ConstantPool;
+import com.uddernetworks.bfjvm.bytecode.chunks.fields.Fields;
+import com.uddernetworks.bfjvm.bytecode.chunks.interfase.InterfaceInfo;
 
 public interface ClassCreator {
 
     void setName(String name);
+
+    void setClassInfo(ClassInfo classInfo);
+
+    void setInterfaceInfo(InterfaceInfo interfaceInfo);
+
+    void setFields(Fields fields);
 
     void pushByte(byte b);
 
