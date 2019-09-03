@@ -1,5 +1,7 @@
 package com.uddernetworks.bfjvm.bytecode;
 
+import com.uddernetworks.bfjvm.bytecode.chunks.constant.ConstantPool;
+
 public interface ClassCreator {
 
     void setName(String name);
