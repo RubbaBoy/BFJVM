@@ -19,7 +19,7 @@ public class ConstantPool implements BytecodeChunk {
     };
 
     private final static ConstantPool constantPool = new ConstantPool();
-    private int lastId = -1;
+    private int lastId = 0;
 
     public int addConstant(Constant constant) {
         System.out.println("Adding " + constant);
@@ -30,7 +30,9 @@ public class ConstantPool implements BytecodeChunk {
     }
 
     public int getIndex(Constant constant) {
-        return addConstant(constant);
+        var id = addConstant(constant);
+        constant.setId(id);
+        return id;
     }
 
     public static ConstantPool getInstance() {

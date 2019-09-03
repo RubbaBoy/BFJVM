@@ -153,7 +153,7 @@ public class DefaultClassCreator implements ClassCreator {
         pushBytes(0x0, 0x21);
 
         // Index of this class in constant pool
-        pushBytes(0x0, 0x1);
+        pushBytes(0x0, 0x01);
 
         // Index of this class' super class in constant pool
         pushBytes(0x0, 0x0);

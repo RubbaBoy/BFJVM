@@ -15,7 +15,7 @@ public class Constant implements BytecodeChunk {
     int cpId = -1;
 
     Constant() {
-        ConstantPool.getInstance().addConstant(this);
+        cpId = ConstantPool.getInstance().addConstant(this);
     }
 
     public Constant(ConstantType type, byte... bytes) {
@@ -31,7 +31,7 @@ public class Constant implements BytecodeChunk {
             System.exit(0);
         }
 
-        ConstantPool.getInstance().addConstant(this);
+        cpId = ConstantPool.getInstance().addConstant(this);
     }
 
     @Override
