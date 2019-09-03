@@ -19,7 +19,7 @@ public class NameAndTypeConstant extends Constant {
      * @param utf8Constant
      * @param descriptorConstant
      */
-    public NameAndTypeConstant(Utf8Constant utf8Constant, StringConstant descriptorConstant) {
+    public NameAndTypeConstant(Utf8Constant utf8Constant, Utf8Constant descriptorConstant) {
         this(utf8Constant.getId(), descriptorConstant.getId());
     }
 

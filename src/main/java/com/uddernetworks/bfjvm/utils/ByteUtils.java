@@ -103,6 +103,8 @@ public class ByteUtils {
                     for (var i : (Integer[]) bytes) {
                         byteList.add(i.byteValue());
                     }
+                } else if (bytes instanceof Byte[]) {
+                    Collections.addAll(byteList, (Byte[]) bytes);
                 } else {
                     for (var b : (byte[]) bytes) {
                         byteList.add(b);

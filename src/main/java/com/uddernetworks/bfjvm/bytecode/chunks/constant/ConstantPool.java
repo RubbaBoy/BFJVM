@@ -6,11 +6,12 @@ import com.uddernetworks.bfjvm.utils.ByteUtils;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class ConstantPool implements BytecodeChunk {
 
-    private Map<Constant, Integer> constants = new HashMap<>() {
+    private Map<Constant, Integer> constants = new LinkedHashMap<>() {
         @Override
         public Integer remove(Object key) {
             throw new UnsupportedOperationException("Removing constants is not allowed!");
@@ -21,6 +22,7 @@ public class ConstantPool implements BytecodeChunk {
     private int lastId = -1;
 
     public int addConstant(Constant constant) {
+        System.out.println("Adding " + constant);
         return constants.computeIfAbsent(constant, c -> {
             constant.setId(++lastId);
             return lastId;
@@ -45,7 +47,7 @@ public class ConstantPool implements BytecodeChunk {
         var bytes = new ByteList();
 
         //// 2u - Size of constant pool
-//        bytes.pushBytes(ByteUtils.intToFlatHex(constants.size()));
+        bytes.pushBytes(ByteUtils.intToFlatHex(constants.size() + 1, 2));
 
         // This will always be in order, as removing constants is impossible
         constants.forEach((constant, integer) -> bytes.pushBytes(constant.getBytes()));

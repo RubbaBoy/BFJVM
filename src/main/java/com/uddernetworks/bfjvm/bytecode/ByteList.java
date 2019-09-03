@@ -30,7 +30,6 @@ public class ByteList {
     }
 
     public byte[] toBytes() {
-        System.out.println("Size: " + bytes.size());
         return listToArray(bytes);
     }
 
