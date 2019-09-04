@@ -120,6 +120,37 @@ public class ByteUtils {
         return byteList.toBytes();
     }
 
+    public static List<Object> createByteArrayIgnoreStrings(Object... objects) {
+        var byteArray = Arrays.stream(objects).collect(Collectors.toList());
+        var byteList = new ArrayList<>();
+        byteArray.forEach(bytes -> {
+            if (!bytes.getClass().isArray()) {
+                if (bytes instanceof Integer) {
+                    byteList.add(((Integer) bytes).byteValue());
+                } else {
+                    byteList.add(bytes);
+                }
+            } else {
+                if (bytes instanceof Integer[]) {
+                    for (var i : (Integer[]) bytes) {
+                        byteList.add(i.byteValue());
+                    }
+                } else if (bytes instanceof byte[]) {
+                    for (var b : (byte[]) bytes) {
+                        byteList.add(b);
+                    }
+                } else if (bytes instanceof Object[]) {
+                    for (var obj : ((Object[]) bytes)) {
+                        byteList.addAll(createByteArrayIgnoreStrings(obj));
+                    }
+                } else {
+                    Collections.addAll(byteList, bytes);
+                }
+            }
+        });
+        return byteList;
+    }
+
     public static byte[] listToArray(List<Byte> byteList) {
         var byteArray = new byte[byteList.size()];
         for (int i = 0; i < byteList.size(); i++) {

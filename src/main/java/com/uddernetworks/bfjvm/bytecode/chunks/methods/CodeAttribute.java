@@ -13,7 +13,7 @@ public class CodeAttribute implements Attribute {
     /**
      * Assumes no catches, and no attributes.
      */
-    public CodeAttribute(Utf8Constant codeConstant, int maxStack, int maxLocals, Object... code) {
+    public CodeAttribute(Utf8Constant codeConstant, int maxStack, int maxLocals, byte... code) {
         this(codeConstant.getId(), maxStack, maxLocals, code);
     }
 
@@ -24,16 +24,14 @@ public class CodeAttribute implements Attribute {
      * @param maxLocals
      * @param code
      */
-    public CodeAttribute(byte[] codeId, int maxStack, int maxLocals, Object... code) {
+    public CodeAttribute(byte[] codeId, int maxStack, int maxLocals, byte... code) {
         var byteList = new ByteList();
-        var flatCode = ByteUtils.createByteArray(code);
         byteList.pushBytes(codeId);
-        byteList.pushBytes(intToFlatHex(12 + flatCode.length, 4)); // Reserve indices 2-5 later for size
-        System.out.println("Size is: " + (12 + flatCode.length) + "");
+        byteList.pushBytes(intToFlatHex(12 + code.length, 4)); // Reserve indices 2-5 later for size
         byteList.pushBytes(intToFlatHex(maxStack, 2));
         byteList.pushBytes(intToFlatHex(maxLocals, 2));
-        byteList.pushBytes(intToFlatHex(flatCode.length, 4));
-        byteList.pushBytes(flatCode);
+        byteList.pushBytes(intToFlatHex(code.length, 4));
+        byteList.pushBytes(code);
         byteList.pushBytes(0x0, 0x0); // Exception table of size 0
         byteList.pushBytes(0x0, 0x0); // AccessModifier count for this attribute of 0
         bytes = byteList.toBytes();

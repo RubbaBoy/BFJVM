@@ -9,10 +9,7 @@ import com.uddernetworks.bfjvm.bytecode.chunks.fields.Field;
 import com.uddernetworks.bfjvm.bytecode.chunks.fields.FieldAccessModifier;
 import com.uddernetworks.bfjvm.bytecode.chunks.fields.Fields;
 import com.uddernetworks.bfjvm.bytecode.chunks.interfase.InterfaceInfo;
-import com.uddernetworks.bfjvm.bytecode.chunks.methods.CodeAttribute;
-import com.uddernetworks.bfjvm.bytecode.chunks.methods.Method;
-import com.uddernetworks.bfjvm.bytecode.chunks.methods.MethodAccessModifier;
-import com.uddernetworks.bfjvm.bytecode.chunks.methods.Methods;
+import com.uddernetworks.bfjvm.bytecode.chunks.methods.*;
 import com.uddernetworks.bfjvm.utils.ByteUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +17,8 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import static com.uddernetworks.bfjvm.bytecode.chunks.methods.IndexAwareCode.get;
+import static com.uddernetworks.bfjvm.bytecode.chunks.methods.IndexAwareCode.set;
 import static com.uddernetworks.bfjvm.utils.ByteUtils.intToFlatHex;
 import static com.uddernetworks.bfjvm.bytecode.chunks.methods.Instruction.*;
 
@@ -74,7 +73,15 @@ public class DefaultBrainfuckCompiler implements BrainfuckCompiler {
         var scannerRef = new FieldrefConstant(helloWorldClass, scannerNAT);
         var initScannerMethod = new MethodrefConstant(scannerClass, new NameAndTypeConstant(new Utf8Constant("<init>"), new Utf8Constant("(Ljava/io/InputStream;)V")));
 
+        // Scanner#findInLine(".")
+        var periodUtf = new Utf8Constant(".");
+        var periodString = new StringConstant(periodUtf);
+        var findInLineMethod = new MethodrefConstant(scannerClass, new NameAndTypeConstant(new Utf8Constant("findInLine"), new Utf8Constant("(Ljava/lang/String;)Ljava/lang/String")));
 
+        // String#charAt(int)
+        var stringUtf = new Utf8Constant("java/lang/String");
+        var stringClass = new ClassConstant(stringUtf);
+        var charAtMethod = new MethodrefConstant(stringClass, new NameAndTypeConstant(new Utf8Constant("charAt"), new Utf8Constant("(I)C")));
 
         // System.in
         var inFieldReference = new FieldrefConstant(systemClass, new NameAndTypeConstant(new Utf8Constant("in"), new Utf8Constant("Ljava/io/PrintStream;")));
@@ -86,7 +93,7 @@ public class DefaultBrainfuckCompiler implements BrainfuckCompiler {
 
         var num65536 = new IntegerConstant(65536);
 
-        var codeConstructor = new CodeConstructor(tapeRef, indexRef, outFieldReference, printlnFieldReference);
+        var codeConstructor = new CodeConstructor(tapeRef, indexRef, outFieldReference, printlnFieldReference, scannerRef, periodString, findInLineMethod, charAtMethod);
 
         //// Class Info
         classCreator.setClassInfo(new ClassInfo(thisClass, null, ClassAccessModifier.PUBLIC));
@@ -126,6 +133,7 @@ public class DefaultBrainfuckCompiler implements BrainfuckCompiler {
                     bfCode.add(codeConstructor.print());
                     break;
                 case INPUT:
+                    bfCode.add(codeConstructor.input());
                     break;
                 case LLOOP:
                     break;
@@ -136,34 +144,51 @@ public class DefaultBrainfuckCompiler implements BrainfuckCompiler {
 
         // main
         methods.addMethod(new Method(mainUtf, stringArrayUtf, Arrays.asList(
-                new CodeAttribute(codeUtf, 2, 1,
-                        // System.out.println()
-                        getstatic, outFieldReference.getId(),
-                        ldc, helloWorldSpaceString.getUnlimId(),
-                        invokevirtual, printlnFieldReference.getId(),
+                new CodeAttribute(codeUtf, 4, 1,
+                        IndexAwareCode.processCode(
+                                // System.out.println()
+                                getstatic, outFieldReference.getId(),
+                                ldc, helloWorldSpaceString.getUnlimId(),
+                                invokevirtual, printlnFieldReference.getId(),
 //                        bfCode.toArray(Object[]::new),
 
+                                set("loop1start"),
+                                getstatic, tapeRef.getId(),
+                                getstatic, indexRef.getId(),
+                                baload,
+                                ifle, get("loop1end"), // 38
+                                getstatic, tapeRef.getId(),
+                                getstatic, indexRef.getId(),
+                                dup2,
+                                baload,
+                                iconst_1,
+                                iadd,
+                                i2b,
+                                bastore,
+                                _goto, get("loop1start"),
 
-
-                        _return
+                                _return, set("loop1end")
+                        )
                 )
         ), MethodAccessModifier.PUBLIC, MethodAccessModifier.STATIC));
 
         // clinit
         methods.addMethod(new Method(clinitUtf, voidMethodUtf, Arrays.asList(
                 new CodeAttribute(codeUtf, 1, 0,
-                        // Setting tape to new byte[65536]
-                        ldc, num65536.getUnlimId(),
-                        newarray, 0x8,
-                        putstatic, tapeRef.getId(),
+                        IndexAwareCode.processCode(
+                                // Setting tape to new byte[65536]
+                                ldc, num65536.getUnlimId(),
+                                newarray, 0x8,
+                                putstatic, tapeRef.getId(),
 
-                        _new, scannerClass.getId(),
-                        dup,
-                        getstatic, inFieldReference.getId(),
-                        invokespecial, initScannerMethod.getId(),
-                        putstatic, scannerRef.getId(),
+                                _new, scannerClass.getId(),
+                                dup,
+                                getstatic, inFieldReference.getId(),
+                                invokespecial, initScannerMethod.getId(),
+                                putstatic, scannerRef.getId(),
 
-                        _return
+                                _return
+                        )
                 )
         ), MethodAccessModifier.STATIC));
 
