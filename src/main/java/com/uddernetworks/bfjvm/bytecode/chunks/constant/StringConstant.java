@@ -1,5 +1,6 @@
 package com.uddernetworks.bfjvm.bytecode.chunks.constant;
 
+import com.uddernetworks.bfjvm.utils.ByteUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,10 +15,13 @@ public class StringConstant extends Constant {
         this(utf8Constant.getId());
     }
 
-    public StringConstant(int stringId) {
+    /**
+     *
+     * @param stringId u2
+     */
+    public StringConstant(byte[] stringId) {
         super();
-        var indexArray = intToFlatHex(stringId, 2);
-        bytes = new byte[] {0x08, indexArray[0], indexArray[1]};
+        bytes = ByteUtils.createByteArray(0x08, stringId);
     }
 
     @Override

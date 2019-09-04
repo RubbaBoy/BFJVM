@@ -4,8 +4,8 @@ import com.uddernetworks.bfjvm.bytecode.chunks.constant.Constant;
 
 public class ConstantUtil {
 
-    public static int idOr0(Constant constant) {
-        return constant == null ? 0 : constant.getId();
+    public static byte[] idOr0(Constant constant) {
+        return constant == null ? new byte[2] : constant.getId();
     }
 
 }

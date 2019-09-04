@@ -16,8 +16,14 @@ public class ClassInfo implements BytecodeChunk {
         this(idOr0(classConstant), idOr0(superConstant), accessModifiers);
     }
 
-    public ClassInfo(int classId, int superId, ClassAccessModifier... accessModifiers) {
-        bytes = ByteUtils.createByteArray(AccessModifier.getByte(accessModifiers), intToFlatHex(classId, 2), intToFlatHex(superId, 2));
+    /**
+     *
+     * @param classId u2
+     * @param superId u2
+     * @param accessModifiers
+     */
+    public ClassInfo(byte[] classId, byte[] superId, ClassAccessModifier... accessModifiers) {
+        bytes = ByteUtils.createByteArray(AccessModifier.getByte(accessModifiers), classId, superId);
     }
 
     @Override

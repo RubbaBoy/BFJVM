@@ -15,11 +15,14 @@ public class FieldrefConstant extends Constant {
         this(classConstant.getId(), nameAndTypeConstant.getId());
     }
 
-    public FieldrefConstant(int classId, int nameAndType) {
+    /**
+     *
+     * @param classId u2
+     * @param nameAndType u2
+     */
+    public FieldrefConstant(byte[] classId, byte[] nameAndType) {
         super();
-        var classArray = intToFlatHex(classId, 2);
-        var ntArray = intToFlatHex(nameAndType, 2);
-        bytes = createByteArray(0x09, classArray, ntArray);
+        bytes = createByteArray(0x09, classId, nameAndType);
     }
 
     @Override

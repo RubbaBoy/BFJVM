@@ -21,9 +21,12 @@ public class Field implements BytecodeChunk {
 
     /**
      * Attributes not supported, because I'm too lazy.
+     *
+     * @param nameId u2
+     * @param descriptionId u2
      */
-    public Field(int nameId, int descriptionId, FieldAccessModifier... accessModifiers) {
-        bytes = ByteUtils.createByteArray(AccessModifier.getByte(accessModifiers), intToFlatHex(nameId, 2), intToFlatHex(descriptionId, 2), 0x0, 0x0);
+    public Field(byte[] nameId, byte[] descriptionId, FieldAccessModifier... accessModifiers) {
+        bytes = ByteUtils.createByteArray(AccessModifier.getByte(accessModifiers), nameId, descriptionId, 0x0, 0x0);
     }
 
     @Override

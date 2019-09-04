@@ -8,6 +8,15 @@ import com.uddernetworks.bfjvm.bytecode.chunks.fields.Field;
 import com.uddernetworks.bfjvm.bytecode.chunks.fields.FieldAccessModifier;
 import com.uddernetworks.bfjvm.bytecode.chunks.fields.Fields;
 import com.uddernetworks.bfjvm.bytecode.chunks.interfase.InterfaceInfo;
+import com.uddernetworks.bfjvm.bytecode.chunks.methods.CodeAttribute;
+import com.uddernetworks.bfjvm.bytecode.chunks.methods.Method;
+import com.uddernetworks.bfjvm.bytecode.chunks.methods.MethodAccessModifier;
+import com.uddernetworks.bfjvm.bytecode.chunks.methods.Methods;
+import com.uddernetworks.bfjvm.utils.ByteUtils;
+
+import java.util.Arrays;
+
+import static com.uddernetworks.bfjvm.utils.ByteUtils.intToFlatHex;
 
 public class DefaultBrainfuckCompiler implements BrainfuckCompiler {
 
@@ -58,6 +67,19 @@ public class DefaultBrainfuckCompiler implements BrainfuckCompiler {
         classCreator.setFields(fields);
 
         fields.addField(new Field(tapeUtf, byteArrayUtf, FieldAccessModifier.PRIVATE, FieldAccessModifier.STATIC));
+
+        //// Methods
+        var methods = new Methods();
+        classCreator.setMethods(methods);
+
+        methods.addMethod(new Method(mainUtf, stringArrayUtf, Arrays.asList(
+                new CodeAttribute(codeUtf, 2, 1,
+                        0xb2, 0x0, outFieldReference.getUnlimId(),
+                        0x12, helloWorldSpaceString.getUnlimId(),
+                        0xb6, 0x0, printlnFieldReference.getUnlimId(),
+                        0xb1
+                )
+        ), MethodAccessModifier.PUBLIC, MethodAccessModifier.STATIC));
 
         return classCreator.create();
     }

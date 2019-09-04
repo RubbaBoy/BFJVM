@@ -22,7 +22,6 @@ public class ConstantPool implements BytecodeChunk {
     private int lastId = 0;
 
     public int addConstant(Constant constant) {
-        System.out.println("Adding " + constant);
         return constants.computeIfAbsent(constant, c -> {
             constant.setId(++lastId);
             return lastId;

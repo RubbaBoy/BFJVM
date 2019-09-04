@@ -4,6 +4,7 @@ import com.uddernetworks.bfjvm.bytecode.chunks.clazz.ClassInfo;
 import com.uddernetworks.bfjvm.bytecode.chunks.constant.ConstantPool;
 import com.uddernetworks.bfjvm.bytecode.chunks.fields.Fields;
 import com.uddernetworks.bfjvm.bytecode.chunks.interfase.InterfaceInfo;
+import com.uddernetworks.bfjvm.bytecode.chunks.methods.Methods;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +16,7 @@ public class DefaultClassCreator implements ClassCreator {
     private ClassInfo classInfo;
     private InterfaceInfo interfaceInfo;
     private Fields fields;
+    private Methods methods;
 
     public DefaultClassCreator() {
 
@@ -38,6 +40,11 @@ public class DefaultClassCreator implements ClassCreator {
     @Override
     public void setFields(Fields fields) {
         this.fields = fields;
+    }
+
+    @Override
+    public void setMethods(Methods methods) {
+        this.methods = methods;
     }
 
     @Override
@@ -207,11 +214,13 @@ public class DefaultClassCreator implements ClassCreator {
 
         //<editor-fold desc="Methods">
 
+        pushBytes(methods.getBytes());
+
         // Number of methods in this class
-        pushBytes(0x0, 0x00);
-
-        /////////////// Numerous bytes making up method definitions
-
+//        pushBytes(0x0, 0x00);
+//
+//        /////////////// Numerous bytes making up method definitions
+//
 //        // main
 //        pushBytes(/* public static */ 0x0, 0x09);
 //        pushBytes(0x0, 0x13, 0x0, 0x14); // main ([Ljava/lang/String;)
@@ -223,11 +232,13 @@ public class DefaultClassCreator implements ClassCreator {
 //        pushBytes(0x0, 0x02, 0x0, 0x1); // Max stack size of 2, and Max local var size of 1
 //        pushBytes(0x0, 0x0, 0x0, 0x09); // Size of code. 9 bytes
 //
+//
 //        // The actual machine instructions:
 //        pushBytes(0xb2, 0x0, 0x0b); // b2 = getstatic, 000b = index #11 in constant pool ( out )
 //        pushBytes(0x12, 0x09); // 12 = ldc ( load constant ), 09 = index #19 ( Hello World )
 //        pushBytes(0xb6, 0x0, 0x0f); // b6 = invokevirtual, 000f = index #15 ( method println )
 //        pushBytes(0xb1); // return void
+//
 //
 //        pushBytes(0x0, 0x0); // Exception table of size 0
 //        pushBytes(0x0, 0x0); // AccessModifier count for this attribute of 0

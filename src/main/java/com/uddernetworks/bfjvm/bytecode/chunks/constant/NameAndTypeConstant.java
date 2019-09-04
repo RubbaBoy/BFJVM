@@ -23,11 +23,14 @@ public class NameAndTypeConstant extends Constant {
         this(utf8Constant.getId(), descriptorConstant.getId());
     }
 
-    public NameAndTypeConstant(int nameId, int descriptorId) {
+    /**
+     *
+     * @param nameId u2
+     * @param descriptorId u2
+     */
+    public NameAndTypeConstant(byte[] nameId, byte[] descriptorId) {
         super();
-        var nameArray = intToFlatHex(nameId, 2);
-        var descriptorArray = intToFlatHex(descriptorId, 2);
-        bytes = createByteArray(0x0c, nameArray, descriptorArray);
+        bytes = createByteArray(0x0c, nameId, descriptorId);
     }
 
     @Override

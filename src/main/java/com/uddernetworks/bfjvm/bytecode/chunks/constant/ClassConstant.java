@@ -15,12 +15,13 @@ public class ClassConstant extends Constant {
         this(utf8Constant.getId());
     }
 
-    public ClassConstant(int utf8Constant) {
+    /**
+     *
+     * @param utf8Constant u2
+     */
+    public ClassConstant(byte[] utf8Constant) {
         super();
-        var indexArray = intToFlatHex(utf8Constant, 2);
-        bytes = createByteArray(0x07, indexArray);
-        System.out.println("utf8Constant = " + utf8Constant);
-        LOGGER.info("ClassConstant bytes: {}", bytes);
+        bytes = createByteArray(0x07, utf8Constant);
     }
 
     @Override

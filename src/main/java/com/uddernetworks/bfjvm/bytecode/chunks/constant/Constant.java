@@ -1,10 +1,12 @@
 package com.uddernetworks.bfjvm.bytecode.chunks.constant;
 
 import com.uddernetworks.bfjvm.bytecode.chunks.BytecodeChunk;
+import com.uddernetworks.bfjvm.utils.ByteUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import static com.uddernetworks.bfjvm.bytecode.chunks.constant.ConstantType.*;
+import static com.uddernetworks.bfjvm.utils.ByteUtils.intToFlatHex;
 
 public class Constant implements BytecodeChunk {
 
@@ -48,9 +50,21 @@ public class Constant implements BytecodeChunk {
         return type;
     }
 
-    public int getId() {
+    public int getIntId() {
         if (cpId == -1) cpId = ConstantPool.getInstance().addConstant(this);
         return cpId;
+    }
+
+    public byte[] getId() {
+        return intToFlatHex(getIntId(), 2);
+    }
+
+    public byte[] getId(int length) {
+        return intToFlatHex(getIntId(), length);
+    }
+
+    public byte[] getUnlimId() {
+        return intToFlatHex(getIntId());
     }
 
     public void setId(int cpId) {

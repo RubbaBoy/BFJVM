@@ -16,7 +16,7 @@ public class InterfaceInfo implements BytecodeChunk {
     public InterfaceInfo(ClassConstant... interfaces) {
         var byteList = new ByteList();
         byteList.pushBytes(intToFlatHex(interfaces.length, 2));
-        Arrays.stream(interfaces).forEach(constant -> byteList.pushBytes(intToFlatHex(constant.getId(), 2)));
+        Arrays.stream(interfaces).forEach(constant -> byteList.pushBytes(constant.getId()));
         bytes = byteList.toBytes();
     }
 
