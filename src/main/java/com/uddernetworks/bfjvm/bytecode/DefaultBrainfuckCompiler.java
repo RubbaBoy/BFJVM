@@ -17,6 +17,7 @@ import com.uddernetworks.bfjvm.utils.ByteUtils;
 import java.util.Arrays;
 
 import static com.uddernetworks.bfjvm.utils.ByteUtils.intToFlatHex;
+import static com.uddernetworks.bfjvm.bytecode.chunks.methods.Instruction.*;
 
 public class DefaultBrainfuckCompiler implements BrainfuckCompiler {
 
@@ -74,12 +75,21 @@ public class DefaultBrainfuckCompiler implements BrainfuckCompiler {
 
         methods.addMethod(new Method(mainUtf, stringArrayUtf, Arrays.asList(
                 new CodeAttribute(codeUtf, 2, 1,
-                        0xb2, 0x0, outFieldReference.getUnlimId(),
-                        0x12, helloWorldSpaceString.getUnlimId(),
-                        0xb6, 0x0, printlnFieldReference.getUnlimId(),
-                        0xb1
+                        getstatic, 0x0, outFieldReference.getUnlimId(),
+                        ldc, helloWorldSpaceString.getUnlimId(),
+                        invokevirtual, 0x0, printlnFieldReference.getUnlimId(),
+                        _return
                 )
         ), MethodAccessModifier.PUBLIC, MethodAccessModifier.STATIC));
+
+        methods.addMethod(new Method(clinitUtf, voidMethodUtf, Arrays.asList(
+                new CodeAttribute(codeUtf, 1, 0,
+                        ldc, num65536.getUnlimId(),
+                        newarray, 0x8,
+                        putstatic, 0x0, fieldRefTape.getUnlimId(),
+                        _return
+                )
+        ), MethodAccessModifier.STATIC));
 
         return classCreator.create();
     }
