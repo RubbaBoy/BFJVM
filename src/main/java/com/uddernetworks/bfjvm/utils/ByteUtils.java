@@ -1,5 +1,6 @@
 package com.uddernetworks.bfjvm.utils;
 
+import com.uddernetworks.bfjvm.bytecode.ByteList;
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Hex;
 import org.slf4j.Logger;
@@ -90,29 +91,33 @@ public class ByteUtils {
      */
     public static byte[] createByteArray(Object... objects) {
         var byteArray = Arrays.stream(objects).collect(Collectors.toList());
-        var byteList = new ArrayList<Byte>();
+        var byteList = new ByteList();
         byteArray.forEach(bytes -> {
             if (!bytes.getClass().isArray()) {
                 if (bytes instanceof Integer) {
-                    byteList.add(((Integer) bytes).byteValue());
+                    byteList.pushByte(((Integer) bytes).byteValue());
                 } else {
-                    byteList.add((byte) bytes);
+                    byteList.pushByte((byte) bytes);
                 }
             } else {
                 if (bytes instanceof Integer[]) {
                     for (var i : (Integer[]) bytes) {
-                        byteList.add(i.byteValue());
+                        byteList.pushByte(i.byteValue());
                     }
                 } else if (bytes instanceof Byte[]) {
-                    Collections.addAll(byteList, (Byte[]) bytes);
-                } else {
-                    for (var b : (byte[]) bytes) {
-                        byteList.add(b);
+                    for (var b : (Byte[]) bytes) {
+                        byteList.pushByte(b);
                     }
+                } else if (bytes instanceof Object[]) {
+                    for (var obj : ((Object[]) bytes)) {
+                        byteList.pushBytes(createByteArray(obj));
+                    }
+                } else {
+                    byteList.pushBytes((byte[]) bytes);
                 }
             }
         });
-        return listToArray(byteList);
+        return byteList.toBytes();
     }
 
     public static byte[] listToArray(List<Byte> byteList) {

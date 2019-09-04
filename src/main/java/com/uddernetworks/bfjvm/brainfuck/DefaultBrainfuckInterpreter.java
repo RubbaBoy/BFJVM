@@ -23,7 +23,7 @@ public class DefaultBrainfuckInterpreter implements BrainfuckInterpreter {
 
     @Override
     public boolean hasNext() {
-        return index + 1 < tokens.size();
+        return index < tokens.size();
     }
 
     @Override
