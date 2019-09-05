@@ -3,7 +3,10 @@ package com.uddernetworks.bfjvm.bytecode.brainfuck;
 import com.uddernetworks.bfjvm.bytecode.chunks.constant.FieldrefConstant;
 import com.uddernetworks.bfjvm.bytecode.chunks.constant.MethodrefConstant;
 import com.uddernetworks.bfjvm.bytecode.chunks.constant.StringConstant;
+import com.uddernetworks.bfjvm.bytecode.chunks.methods.IndexAwareCode;
 
+import static com.uddernetworks.bfjvm.bytecode.chunks.methods.IndexAwareCode.get;
+import static com.uddernetworks.bfjvm.bytecode.chunks.methods.IndexAwareCode.set;
 import static com.uddernetworks.bfjvm.bytecode.chunks.methods.Instruction.*;
 import static com.uddernetworks.bfjvm.utils.ByteUtils.createByteArray;
 
@@ -18,7 +21,7 @@ public class CodeConstructor {
     private byte[] findInLineMethod;
     private byte[] charAtMethod;
 
-    public CodeConstructor(FieldrefConstant tapeRef, FieldrefConstant indexRef, FieldrefConstant outFieldRef, FieldrefConstant printlnFieldRef, FieldrefConstant scannerRef, StringConstant periodString, MethodrefConstant findInLineMethod,  MethodrefConstant charAtMethod) {
+    public CodeConstructor(FieldrefConstant tapeRef, FieldrefConstant indexRef, FieldrefConstant outFieldRef, MethodrefConstant printlnFieldRef, FieldrefConstant scannerRef, StringConstant periodString, MethodrefConstant findInLineMethod,  MethodrefConstant charAtMethod) {
         this.tapeRef = tapeRef.getId();
         this.indexRef = indexRef.getId();
         this.outFieldRef = outFieldRef.getId();
@@ -96,5 +99,22 @@ public class CodeConstructor {
                 i2b,
                 bastore
         );
+    }
+
+    public Object[] leftLoop(int id) {
+        return new Object[]{
+                set("ls" + id),
+                getstatic, tapeRef,
+                getstatic, indexRef,
+                baload,
+                ifle, get("le" + id)
+        };
+    }
+
+    public Object[] rightLoop(int id) {
+        return new Object[]{
+                _goto, get("ls" + id),
+                set("le" + id, 1)
+        };
     }
 }

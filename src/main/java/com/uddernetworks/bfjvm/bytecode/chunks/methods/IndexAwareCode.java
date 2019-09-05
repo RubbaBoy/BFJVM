@@ -25,10 +25,9 @@ public class IndexAwareCode {
         var stringedBytes = ByteUtils.createByteArrayIgnoreStrings(code);
         for (var strOrByte : stringedBytes) {
             if (strOrByte instanceof String) {
-                var getSet = ((String) strOrByte).split("\\|", 2);
-                var name = getSet[1];
+                var getSet = ((String) strOrByte).split("\\|");
                 if (getSet[0].equals("set")) {
-                    byteIndices.put(name, index);
+                    byteIndices.put(getSet[1], index + Integer.parseInt(getSet[2]));
                 } else {
                     index += 2;
                 }
@@ -41,12 +40,13 @@ public class IndexAwareCode {
         var byteList = new ByteList();
         for (var strOrByte : stringedBytes) {
             if (strOrByte instanceof String) {
-                var getSet = ((String) strOrByte).split("\\|", 2);
+                var getSet = ((String) strOrByte).split("\\|");
                 var name = getSet[1];
                 if (getSet[0].equals("get")) {
                     if (!byteIndices.containsKey(name)) throw new RuntimeException("Index of name " + name + " has not been stored yet at index " + index);
-                    byteList.pushBytes(calculateOffset(byteIndices.get(name) - index));
-                    index++;
+                    LOGGER.info("Getting {} at index: {}", name, index);
+                    byteList.pushBytes(calculateOffset(byteIndices.get(name) - index - 1));
+                    index += 2;
                 }
             } else {
                 byteList.pushByte((Byte) strOrByte);
@@ -70,7 +70,11 @@ public class IndexAwareCode {
     }
 
     public static String set(String name) {
-        return "set|" + name;
+        return set(name, 0);
+    }
+
+    public static String set(String name, int offset) {
+        return "set|" + name + "|" + offset;
     }
 
     public static String get(String name) {

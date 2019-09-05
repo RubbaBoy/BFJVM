@@ -19,7 +19,12 @@ public class BFJVM {
 
     public static void main(String[] args) throws IOException {
         var compiler = new DefaultBrainfuckCompiler();
-        var clazz = compiler.compileBrainfuck("+++++>>+++<---.");
+        var clazz = compiler.compileBrainfuck("++++++++++\n" +
+                "[->+++++++<]\n" +
+                ">++.\n" +
+                "+.");
+
+//        var clazz = compiler.compileBrainfuck("+.");
 
         System.out.println(clazz.getBytes());
 
@@ -29,13 +34,13 @@ public class BFJVM {
             bytes[i] = byteList.get(i);
         }
 
-        var outPath = Paths.get("out.class");
+        var outPath = Paths.get("Brainfuck.class");
         Files.write(outPath, bytes, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
 
-        LOGGER.info("javap out.class:");
-        LOGGER.info(Commandline.runCommand(true, "javap out.class"));
-        LOGGER.info("javap -verbose out.class:");
-        LOGGER.info(Commandline.runCommand(true, "javap", "-verbose", "out.class"));
+        LOGGER.info("javap Brainfuck.class:");
+        LOGGER.info(Commandline.runCommand(true, "javap Brainfuck.class"));
+        LOGGER.info("javap -verbose Brainfuck.class:");
+        LOGGER.info(Commandline.runCommand(true, "javap", "-verbose", "Brainfuck.class"));
     }
 
 }
