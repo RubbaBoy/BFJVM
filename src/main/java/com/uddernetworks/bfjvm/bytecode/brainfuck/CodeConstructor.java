@@ -114,7 +114,7 @@ public class CodeConstructor {
     public Object[] rightLoop(int id) {
         return new Object[]{
                 _goto, get("ls" + id),
-                set("le" + id, 1)
+                set("le" + id)
         };
     }
 }

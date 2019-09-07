@@ -41,11 +41,12 @@ public class DefaultBrainfuckCompiler implements BrainfuckCompiler {
         var objectClass = new ClassConstant(new Utf8Constant("java/lang/Object"));
         var systemClass = new ClassConstant(new Utf8Constant("java/lang/System"));
         var printStreamClass = new ClassConstant(new Utf8Constant("java/io/PrintStream"));
+        var smtUtf = new Utf8Constant("StackMapTable");
         var helloWorldSpaceUtf = new Utf8Constant("Hello World");
         var helloWorldSpaceString = new StringConstant(helloWorldSpaceUtf);
 
         var outFieldReference = new FieldrefConstant(systemClass, new NameAndTypeConstant(new Utf8Constant("out"), new Utf8Constant("Ljava/io/PrintStream;")));
-        var printlnFieldReference = new MethodrefConstant(printStreamClass, new NameAndTypeConstant(new Utf8Constant("println"), new Utf8Constant("(C)V")));
+        var printlnFieldReference = new MethodrefConstant(printStreamClass, new NameAndTypeConstant(new Utf8Constant("print"), new Utf8Constant("(C)V")));
 
         var initUtf = new Utf8Constant("<init>");
         var voidMethodUtf = new Utf8Constant("()V");
@@ -150,7 +151,7 @@ public class DefaultBrainfuckCompiler implements BrainfuckCompiler {
 
         // main
         methods.addMethod(new Method(mainUtf, stringArrayUtf, Arrays.asList(
-                new CodeAttribute(codeUtf, 4, 1,
+                new CodeAttribute(smtUtf, codeUtf, 4, 1,
                         IndexAwareCode.processCode(
                                 // System.out.println()
 //                                getstatic, outFieldReference.getId(),
@@ -164,7 +165,7 @@ public class DefaultBrainfuckCompiler implements BrainfuckCompiler {
 
         // clinit
         methods.addMethod(new Method(clinitUtf, voidMethodUtf, Arrays.asList(
-                new CodeAttribute(codeUtf, 3, 0,
+                new CodeAttribute(smtUtf, codeUtf, 3, 0,
                         IndexAwareCode.processCode(
                                 // Setting tape to new byte[65536]
                                 ldc, num65536.getUnlimId(),

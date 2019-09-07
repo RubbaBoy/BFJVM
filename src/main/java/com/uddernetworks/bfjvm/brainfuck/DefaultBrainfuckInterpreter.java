@@ -46,11 +46,11 @@ public class DefaultBrainfuckInterpreter implements BrainfuckInterpreter {
         System.out.println(pairIndices);
     }
 
-    private int getIdOfLeft() {
+    private int getIdOfLeft(int index) {
         return pairIndices.entrySet().stream().filter(entry -> entry.getValue().getKey() == index).findFirst().map(Map.Entry::getKey).orElse(-1);
     }
 
-    private int getIdOfRight() {
+    private int getIdOfRight(int index) {
         return pairIndices.entrySet().stream().filter(entry -> entry.getValue().getValue() == index).findFirst().map(Map.Entry::getKey).orElse(-1);
     }
 
@@ -73,10 +73,11 @@ public class DefaultBrainfuckInterpreter implements BrainfuckInterpreter {
     public int loopId() {
         var curr = tokens.get(index - 1);
         if (curr == BFToken.LLOOP) {
-            return getIdOfLeft();
+            return getIdOfLeft(index - 1);
         } else if (curr == BFToken.RLOOP) {
-            return getIdOfRight();
+            return getIdOfRight(index - 1);
         }
+        LOGGER.info("-1 because token: {}", curr.name());
         return -1;
     }
 }

@@ -23,8 +23,8 @@ public class BFJVM {
                 "[->+++++++<]\n" +
                 ">++.\n" +
                 "+.");
-
-//        var clazz = compiler.compileBrainfuck("+.");
+// +[-[<<[+[--->]-[<<<]]]>>>-]>-.---.>..>.<<<<-.<+.>>>>>.>.<<.<-.
+//        var clazz = compiler.compileBrainfuck(".[]");
 
         System.out.println(clazz.getBytes());
 

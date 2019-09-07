@@ -44,8 +44,8 @@ public class IndexAwareCode {
                 var name = getSet[1];
                 if (getSet[0].equals("get")) {
                     if (!byteIndices.containsKey(name)) throw new RuntimeException("Index of name " + name + " has not been stored yet at index " + index);
-                    LOGGER.info("Getting {} at index: {}", name, index);
-                    byteList.pushBytes(calculateOffset(byteIndices.get(name) - index - 1));
+                    LOGGER.info("Getting {} at index: {}  index is: {} subtracted is: {} result is: {}", name, index, byteIndices.get(name), byteIndices.get(name) - index, calculateOffset(byteIndices.get(name) - index));
+                    byteList.pushBytes(calculateOffset(byteIndices.get(name) - index + 1));
                     index += 2;
                 }
             } else {

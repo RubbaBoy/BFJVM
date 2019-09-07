@@ -6,36 +6,11 @@ public class ex {
     private static Scanner scanner;
 
     public static void main(String[] var0) {
-        ++tape[index];
-        ++tape[index];
-        ++tape[index];
-        ++tape[index];
-        ++tape[index];
-        ++tape[index];
-        ++tape[index];
-        ++tape[index];
-        ++tape[index];
-        ++tape[index];
+        System.out.println((char)tape[index]);
 
         while(tape[index] > 0) {
-            --tape[index];
-            ++index;
-            ++tape[index];
-            ++tape[index];
-            ++tape[index];
-            ++tape[index];
-            ++tape[index];
-            ++tape[index];
-            ++tape[index];
-            --index;
         }
 
-        ++index;
-        ++tape[index];
-        ++tape[index];
-        System.out.println((char)tape[index]);
-        ++tape[index];
-        System.out.println((char)tape[index]);
     }
 
     static {
