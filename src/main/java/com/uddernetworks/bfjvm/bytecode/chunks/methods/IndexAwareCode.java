@@ -7,9 +7,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.nio.ByteBuffer;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.uddernetworks.bfjvm.utils.ByteUtils.createByteArray;
@@ -19,14 +17,17 @@ public class IndexAwareCode {
 
     private static Logger LOGGER = LoggerFactory.getLogger(IndexAwareCode.class);
 
-    public static byte[] processCode(Object... code) {
+    public static FinalizedCode processCode(Object... code) {
         var byteIndices = new HashMap<String, Integer>();
+        var frameLocations = new ArrayList<Integer>();
         var index = 0;
         var stringedBytes = ByteUtils.createByteArrayIgnoreStrings(code);
         for (var strOrByte : stringedBytes) {
             if (strOrByte instanceof String) {
                 var getSet = ((String) strOrByte).split("\\|");
-                if (getSet[0].equals("set")) {
+                if (getSet[0].equals("frame")) {
+                    frameLocations.add(index);
+                } else if (getSet[0].equals("set")) {
                     byteIndices.put(getSet[1], index + Integer.parseInt(getSet[2]));
                 } else {
                     index += 2;
@@ -41,8 +42,8 @@ public class IndexAwareCode {
         for (var strOrByte : stringedBytes) {
             if (strOrByte instanceof String) {
                 var getSet = ((String) strOrByte).split("\\|");
-                var name = getSet[1];
                 if (getSet[0].equals("get")) {
+                    var name = getSet[1];
                     if (!byteIndices.containsKey(name)) throw new RuntimeException("Index of name " + name + " has not been stored yet at index " + index);
                     LOGGER.info("Getting {} at index: {}  index is: {} subtracted is: {} result is: {}", name, index, byteIndices.get(name), byteIndices.get(name) - index, calculateOffset(byteIndices.get(name) - index));
                     byteList.pushBytes(calculateOffset(byteIndices.get(name) - index + 1));
@@ -54,7 +55,7 @@ public class IndexAwareCode {
             }
         }
 
-        return byteList.toBytes();
+        return new FinalizedCode(byteList.toBytes(), List.copyOf(frameLocations));
     }
 
     private static byte[] calculateOffset(int signedInt) {

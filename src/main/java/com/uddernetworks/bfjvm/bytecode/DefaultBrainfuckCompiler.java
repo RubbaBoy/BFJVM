@@ -153,10 +153,6 @@ public class DefaultBrainfuckCompiler implements BrainfuckCompiler {
         methods.addMethod(new Method(mainUtf, stringArrayUtf, Arrays.asList(
                 new CodeAttribute(smtUtf, codeUtf, 4, 1,
                         IndexAwareCode.processCode(
-                                // System.out.println()
-//                                getstatic, outFieldReference.getId(),
-//                                ldc, helloWorldSpaceString.getUnlimId(),
-//                                invokevirtual, printlnFieldReference.getId(),
                                 bfCode.toArray(Object[]::new),
                                 _return
                         )

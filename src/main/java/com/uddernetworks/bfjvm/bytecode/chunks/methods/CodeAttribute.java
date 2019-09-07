@@ -15,7 +15,7 @@ public class CodeAttribute implements Attribute {
     /**
      * Assumes no catches, and no attributes.
      */
-    public CodeAttribute(Utf8Constant smtConstant, Utf8Constant codeConstant, int maxStack, int maxLocals, byte... code) {
+    public CodeAttribute(Utf8Constant smtConstant, Utf8Constant codeConstant, int maxStack, int maxLocals, FinalizedCode code) {
         this(smtConstant.getId(), codeConstant.getId(), maxStack, maxLocals, code);
     }
 
@@ -26,25 +26,19 @@ public class CodeAttribute implements Attribute {
      * @param maxLocals
      * @param code
      */
-    public CodeAttribute(byte[] smtId, byte[] codeId, int maxStack, int maxLocals, byte... code) {
+    public CodeAttribute(byte[] smtId, byte[] codeId, int maxStack, int maxLocals, FinalizedCode code) {
         var byteList = new ByteList();
 
         var stackMapTable = new StackMapTable(code);
 
         byteList.pushBytes(codeId);
-        byteList.pushBytes(intToFlatHex(10 + stackMapTable.getBytes().length + code.length, 4)); // Reserve indices 2-5 later for size
+        byteList.pushBytes(intToFlatHex(10 + stackMapTable.getBytes().length + code.getBytes().length, 4)); // Reserve indices 2-5 later for size
         byteList.pushBytes(intToFlatHex(maxStack, 2));
         byteList.pushBytes(intToFlatHex(maxLocals, 2));
-        byteList.pushBytes(intToFlatHex(code.length, 4));
-        byteList.pushBytes(code);
+        byteList.pushBytes(intToFlatHex(code.getBytes().length, 4));
+        byteList.pushBytes(code.getBytes());
         byteList.pushBytes(0x0, 0x0); // Exception table of size 0
         byteList.pushBytes(stackMapTable.getBytes());
-//        byteList.pushBytes(0x0, 0x0); // Exception table of size 0
-
-//        byteList.pushBytes(/* size of this - 6 */ 0x0, 0x0, 0x0, 0x4, /* count */ 0x0, 0x0, 0xc, 0xe);
-//        byteList.pushBytes(/* size of this - 6 */ 0x0, 0x0, 0x0, 0x4, /* count */ 0x0, 0x0, 0xc, 0xe);
-//        byteList.pushBytes(0x0e, 0x0c);
-
         bytes = byteList.toBytes();
     }
 

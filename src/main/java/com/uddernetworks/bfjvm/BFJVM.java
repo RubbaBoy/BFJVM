@@ -19,12 +19,13 @@ public class BFJVM {
 
     public static void main(String[] args) throws IOException {
         var compiler = new DefaultBrainfuckCompiler();
-        var clazz = compiler.compileBrainfuck("++++++++++\n" +
-                "[->+++++++<]\n" +
-                ">++.\n" +
-                "+.");
+//        var clazz = compiler.compileBrainfuck("++++++++++\n" +
+//                "[->+++++++<]\n" +
+//                ">++.\n" +
+//                "+.");
 // +[-[<<[+[--->]-[<<<]]]>>>-]>-.---.>..>.<<<<-.<+.>>>>>.>.<<.<-.
-//        var clazz = compiler.compileBrainfuck(".[]");
+//        var clazz = compiler.compileBrainfuck(".[[]]");
+        var clazz = compiler.compileBrainfuck("++++++++[>++++[>++>+++>+++>+<<<<-]>+>+>->>+[<]<-]>>.>---.+++++++..+++.>>.<-.<.+++.------.--------.>>+.>++.");
 
         System.out.println(clazz.getBytes());
 

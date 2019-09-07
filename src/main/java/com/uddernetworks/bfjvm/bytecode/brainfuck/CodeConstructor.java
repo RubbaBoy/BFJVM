@@ -103,6 +103,7 @@ public class CodeConstructor {
 
     public Object[] leftLoop(int id) {
         return new Object[]{
+                "frame",
                 set("ls" + id),
                 getstatic, tapeRef,
                 getstatic, indexRef,
@@ -114,7 +115,8 @@ public class CodeConstructor {
     public Object[] rightLoop(int id) {
         return new Object[]{
                 _goto, get("ls" + id),
-                set("le" + id)
+                "frame",
+                set("le" + id),
         };
     }
 }
