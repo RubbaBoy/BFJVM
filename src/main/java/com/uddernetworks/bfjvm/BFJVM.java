@@ -26,16 +26,18 @@ public class BFJVM {
             System.exit(0);
         }
 
+        var name = inputFile.getName();
+        name = name.substring(0, name.lastIndexOf('.'));
         var bfCode = new String(Files.readAllBytes(inputFile.toPath()));
 
         var compiler = new DefaultBrainfuckCompiler();
         var start = System.currentTimeMillis();
-        var clazz = compiler.compileBrainfuck(bfCode);
+        var clazz = compiler.compileBrainfuck(bfCode, name);
         var duration = System.currentTimeMillis() - start;
         LOGGER.info("Compiled in {}ms", duration);
 
         start = System.currentTimeMillis();
-        var outPath = Paths.get(inputFile.getName() + ".class");
+        var outPath = Paths.get(name + ".class");
         Files.write(outPath, clazz.getBytes(), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
         duration = System.currentTimeMillis() - start;
         LOGGER.info("Wrote to class file in {}ms", duration);

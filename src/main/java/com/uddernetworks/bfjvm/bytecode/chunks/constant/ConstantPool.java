@@ -51,11 +51,6 @@ public class ConstantPool implements BytecodeChunk {
         // This will always be in order, as removing constants is impossible
         constants.forEach((constant, integer) -> bytes.pushBytes(constant.getBytes()));
 
-        for (byte b : bytes.toBytes()) {
-            System.out.print((char) b);
-        }
-        System.out.println("\n");
-
         return bytes.toBytes();
     }
 }

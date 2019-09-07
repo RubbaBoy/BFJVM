@@ -91,7 +91,6 @@ public class DefaultBrainfuckInterpreter implements BrainfuckInterpreter {
         if (currTokenType != null) optimizedTokens.add(new BFDataToken(currTokenType, currCombining.stream().mapToInt(BFDataToken::getData).sum()));
 
         tokens = List.copyOf(optimizedTokens);
-        LOGGER.info("{}", tokens);
     }
 
     @Override

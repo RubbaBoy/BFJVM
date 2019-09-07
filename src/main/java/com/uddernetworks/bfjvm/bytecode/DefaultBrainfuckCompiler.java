@@ -19,15 +19,15 @@ import static com.uddernetworks.bfjvm.bytecode.chunks.methods.Instruction.*;
 public class DefaultBrainfuckCompiler implements BrainfuckCompiler {
 
     @Override
-    public BytecodeClass compileBrainfuck(String program) {
+    public BytecodeClass compileBrainfuck(String program, String name) {
         var interpreter = new DefaultBrainfuckInterpreter(true);
         interpreter.readProgram(program);
 
         var classCreator = new DefaultClassCreator();
-        classCreator.setName("Brainfuck");
+        classCreator.setName(name);
 
         //// Constant Pool
-        var thisClass = new ClassConstant(new Utf8Constant("Brainfuck"));
+        var thisClass = new ClassConstant(new Utf8Constant(name));
 
         var objectClass = new ClassConstant(new Utf8Constant("java/lang/Object"));
         var systemClass = new ClassConstant(new Utf8Constant("java/lang/System"));

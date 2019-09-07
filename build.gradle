@@ -1,11 +1,16 @@
 plugins {
+    id 'application'
     id 'java'
+    id "com.github.johnrengelman.shadow" version "4.0.2"
 }
 
 group 'com.uddernetworks.bfjvm'
 version '1.0-SNAPSHOT'
 
 sourceCompatibility = 11
+targetCompatibility = 11
+
+mainClassName = 'com.uddernetworks.bfjvm.BFJVM'
 
 repositories {
     mavenCentral()
