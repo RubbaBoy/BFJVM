@@ -4,9 +4,11 @@ public interface BrainfuckInterpreter {
 
     void readProgram(String program);
 
+    void optimize();
+
     boolean hasNext();
 
-    BFToken nextToken();
+    BFDataToken nextToken();
 
     void resetNext();
 

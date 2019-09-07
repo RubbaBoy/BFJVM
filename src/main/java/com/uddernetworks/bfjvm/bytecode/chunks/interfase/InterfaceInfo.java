@@ -3,7 +3,6 @@ package com.uddernetworks.bfjvm.bytecode.chunks.interfase;
 import com.uddernetworks.bfjvm.bytecode.ByteList;
 import com.uddernetworks.bfjvm.bytecode.chunks.BytecodeChunk;
 import com.uddernetworks.bfjvm.bytecode.chunks.constant.ClassConstant;
-import com.uddernetworks.bfjvm.utils.ByteUtils;
 
 import java.util.Arrays;
 

@@ -7,8 +7,6 @@ import com.uddernetworks.bfjvm.utils.ByteUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.uddernetworks.bfjvm.utils.ByteUtils.intToHex;
-
 public class Fields implements BytecodeChunk {
 
     private List<Field> fields = new ArrayList<>();

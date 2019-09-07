@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory;
 
 import static com.uddernetworks.bfjvm.bytecode.chunks.constant.ConstantType.CLASS;
 import static com.uddernetworks.bfjvm.utils.ByteUtils.createByteArray;
-import static com.uddernetworks.bfjvm.utils.ByteUtils.intToFlatHex;
 
 public class ClassConstant extends Constant {
 

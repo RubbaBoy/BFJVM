@@ -10,26 +10,17 @@ import com.uddernetworks.bfjvm.bytecode.chunks.fields.FieldAccessModifier;
 import com.uddernetworks.bfjvm.bytecode.chunks.fields.Fields;
 import com.uddernetworks.bfjvm.bytecode.chunks.interfase.InterfaceInfo;
 import com.uddernetworks.bfjvm.bytecode.chunks.methods.*;
-import com.uddernetworks.bfjvm.utils.ByteUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Scanner;
 
-import static com.uddernetworks.bfjvm.bytecode.chunks.methods.IndexAwareCode.get;
-import static com.uddernetworks.bfjvm.bytecode.chunks.methods.IndexAwareCode.set;
-import static com.uddernetworks.bfjvm.utils.ByteUtils.intToFlatHex;
 import static com.uddernetworks.bfjvm.bytecode.chunks.methods.Instruction.*;
 
 public class DefaultBrainfuckCompiler implements BrainfuckCompiler {
 
-    private static Logger LOGGER = LoggerFactory.getLogger(DefaultBrainfuckCompiler.class);
-
     @Override
     public BytecodeClass compileBrainfuck(String program) {
-        var interpreter = new DefaultBrainfuckInterpreter();
+        var interpreter = new DefaultBrainfuckInterpreter(true);
         interpreter.readProgram(program);
 
         var classCreator = new DefaultClassCreator();
@@ -42,18 +33,12 @@ public class DefaultBrainfuckCompiler implements BrainfuckCompiler {
         var systemClass = new ClassConstant(new Utf8Constant("java/lang/System"));
         var printStreamClass = new ClassConstant(new Utf8Constant("java/io/PrintStream"));
         var smtUtf = new Utf8Constant("StackMapTable");
-        var helloWorldSpaceUtf = new Utf8Constant("Hello World");
-        var helloWorldSpaceString = new StringConstant(helloWorldSpaceUtf);
 
         var outFieldReference = new FieldrefConstant(systemClass, new NameAndTypeConstant(new Utf8Constant("out"), new Utf8Constant("Ljava/io/PrintStream;")));
         var printlnFieldReference = new MethodrefConstant(printStreamClass, new NameAndTypeConstant(new Utf8Constant("print"), new Utf8Constant("(C)V")));
 
         var initUtf = new Utf8Constant("<init>");
         var voidMethodUtf = new Utf8Constant("()V");
-
-        // Constructor
-        var constructorUtf = new Utf8Constant("Brainfuck");
-        var objectInit = new MethodrefConstant(objectClass, new NameAndTypeConstant(initUtf, voidMethodUtf));
 
         // main(String[])
         var mainUtf = new Utf8Constant("main");
@@ -121,18 +106,19 @@ public class DefaultBrainfuckCompiler implements BrainfuckCompiler {
         var bfCode = new ArrayList<>();
         while (interpreter.hasNext()) {
             var token = interpreter.nextToken();
-            switch (token) {
+            var data = token.getData();
+            switch (token.getToken()) {
                 case ADD:
-                    bfCode.add(codeConstructor.add());
+                    bfCode.add(codeConstructor.add(data));
                     break;
                 case SUB:
-                    bfCode.add(codeConstructor.subtract());
+                    bfCode.add(codeConstructor.subtract(data));
                     break;
                 case LEFT:
-                    bfCode.add(codeConstructor.moveLeft());
+                    bfCode.add(codeConstructor.moveLeft(data));
                     break;
                 case RIGHT:
-                    bfCode.add(codeConstructor.moveRight());
+                    bfCode.add(codeConstructor.moveRight(data));
                     break;
                 case PRINT:
                     bfCode.add(codeConstructor.print());
@@ -178,17 +164,6 @@ public class DefaultBrainfuckCompiler implements BrainfuckCompiler {
                         )
                 )
         ), MethodAccessModifier.STATIC));
-
-        // constructor (Is this necessary?)
-//        methods.addMethod(new Method(constructorUtf, voidMethodUtf, Arrays.asList(
-//                new CodeAttribute(codeUtf, 1, 1,
-//                        IndexAwareCode.processCode(
-//                                aload_0,
-//                                invokespecial, objectInit.getId(),
-//                                _return
-//                        )
-//                )
-//        ), MethodAccessModifier.PUBLIC));
 
         return classCreator.create();
     }

@@ -3,7 +3,6 @@ package com.uddernetworks.bfjvm.bytecode.chunks.constant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static com.uddernetworks.bfjvm.bytecode.chunks.constant.ConstantType.FIELDREF;
 import static com.uddernetworks.bfjvm.bytecode.chunks.constant.ConstantType.METHODREF;
 import static com.uddernetworks.bfjvm.utils.ByteUtils.createByteArray;
 

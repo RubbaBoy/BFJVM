@@ -4,15 +4,14 @@ import java.util.List;
 
 public class DefaultBytecodeClass implements BytecodeClass {
 
-    private List<Byte> bytes;
+    private byte[] bytes;
 
-    public DefaultBytecodeClass(List<Byte> bytes) {
+    public DefaultBytecodeClass(byte[] bytes) {
         this.bytes = bytes;
     }
 
-
     @Override
-    public List<Byte> getBytes() {
+    public byte[] getBytes() {
         return bytes;
     }
 }

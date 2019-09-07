@@ -1,10 +1,6 @@
 package com.uddernetworks.bfjvm.bytecode.chunks.clazz;
 
 import com.uddernetworks.bfjvm.bytecode.accessmodifier.AccessModifier;
-import com.uddernetworks.bfjvm.utils.ByteUtils;
-
-import java.util.Arrays;
-import java.util.stream.Collectors;
 
 public enum ClassAccessModifier implements AccessModifier {
     PUBLIC(0x0001),

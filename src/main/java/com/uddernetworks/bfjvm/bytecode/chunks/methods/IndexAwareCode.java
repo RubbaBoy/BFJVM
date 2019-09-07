@@ -2,20 +2,14 @@ package com.uddernetworks.bfjvm.bytecode.chunks.methods;
 
 import com.uddernetworks.bfjvm.bytecode.ByteList;
 import com.uddernetworks.bfjvm.utils.ByteUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.io.File;
-import java.nio.ByteBuffer;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
-import static com.uddernetworks.bfjvm.utils.ByteUtils.createByteArray;
 import static com.uddernetworks.bfjvm.utils.ByteUtils.intToFlatHex;
 
 public class IndexAwareCode {
-
-    private static Logger LOGGER = LoggerFactory.getLogger(IndexAwareCode.class);
 
     public static FinalizedCode processCode(Object... code) {
         var byteIndices = new HashMap<String, Integer>();
@@ -45,7 +39,6 @@ public class IndexAwareCode {
                 if (getSet[0].equals("get")) {
                     var name = getSet[1];
                     if (!byteIndices.containsKey(name)) throw new RuntimeException("Index of name " + name + " has not been stored yet at index " + index);
-                    LOGGER.info("Getting {} at index: {}  index is: {} subtracted is: {} result is: {}", name, index, byteIndices.get(name), byteIndices.get(name) - index, calculateOffset(byteIndices.get(name) - index));
                     byteList.pushBytes(calculateOffset(byteIndices.get(name) - index + 1));
                     index += 2;
                 }

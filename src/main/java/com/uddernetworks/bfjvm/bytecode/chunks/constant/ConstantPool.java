@@ -4,8 +4,6 @@ import com.uddernetworks.bfjvm.bytecode.ByteList;
 import com.uddernetworks.bfjvm.bytecode.chunks.BytecodeChunk;
 import com.uddernetworks.bfjvm.utils.ByteUtils;
 
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 

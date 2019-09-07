@@ -1,12 +1,10 @@
 package com.uddernetworks.bfjvm.bytecode.chunks.constant;
 
-import com.uddernetworks.bfjvm.utils.ByteUtils;
-
 import java.util.Arrays;
-import java.util.stream.Collectors;
 
 import static com.uddernetworks.bfjvm.bytecode.chunks.constant.ConstantType.UTF8;
-import static com.uddernetworks.bfjvm.utils.ByteUtils.*;
+import static com.uddernetworks.bfjvm.utils.ByteUtils.createByteArray;
+import static com.uddernetworks.bfjvm.utils.ByteUtils.intToFlatHex;
 
 public class Utf8Constant extends Constant {
 

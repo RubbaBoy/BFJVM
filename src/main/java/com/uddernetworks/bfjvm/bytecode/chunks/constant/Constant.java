@@ -1,11 +1,10 @@
 package com.uddernetworks.bfjvm.bytecode.chunks.constant;
 
 import com.uddernetworks.bfjvm.bytecode.chunks.BytecodeChunk;
-import com.uddernetworks.bfjvm.utils.ByteUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static com.uddernetworks.bfjvm.bytecode.chunks.constant.ConstantType.*;
+import static com.uddernetworks.bfjvm.bytecode.chunks.constant.ConstantType.UTF8;
 import static com.uddernetworks.bfjvm.utils.ByteUtils.intToFlatHex;
 
 public class Constant implements BytecodeChunk {

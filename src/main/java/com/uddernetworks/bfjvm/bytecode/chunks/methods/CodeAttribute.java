@@ -2,9 +2,6 @@ package com.uddernetworks.bfjvm.bytecode.chunks.methods;
 
 import com.uddernetworks.bfjvm.bytecode.ByteList;
 import com.uddernetworks.bfjvm.bytecode.chunks.constant.Utf8Constant;
-import com.uddernetworks.bfjvm.utils.ByteUtils;
-
-import java.util.Arrays;
 
 import static com.uddernetworks.bfjvm.utils.ByteUtils.intToFlatHex;
 
@@ -29,7 +26,7 @@ public class CodeAttribute implements Attribute {
     public CodeAttribute(byte[] smtId, byte[] codeId, int maxStack, int maxLocals, FinalizedCode code) {
         var byteList = new ByteList();
 
-        var stackMapTable = new StackMapTable(code);
+        var stackMapTable = new StackMapTable(code, smtId);
 
         byteList.pushBytes(codeId);
         byteList.pushBytes(intToFlatHex(10 + stackMapTable.getBytes().length + code.getBytes().length, 4)); // Reserve indices 2-5 later for size

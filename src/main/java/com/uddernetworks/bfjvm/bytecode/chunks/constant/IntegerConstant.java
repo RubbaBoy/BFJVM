@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import static com.uddernetworks.bfjvm.bytecode.chunks.constant.ConstantType.INTEGER;
-import static com.uddernetworks.bfjvm.bytecode.chunks.constant.ConstantType.STRING;
 import static com.uddernetworks.bfjvm.utils.ByteUtils.createByteArray;
 import static com.uddernetworks.bfjvm.utils.ByteUtils.intToFlatHex;
 

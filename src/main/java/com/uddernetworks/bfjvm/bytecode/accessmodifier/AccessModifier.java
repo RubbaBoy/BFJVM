@@ -1,6 +1,5 @@
 package com.uddernetworks.bfjvm.bytecode.accessmodifier;
 
-import com.uddernetworks.bfjvm.bytecode.chunks.clazz.ClassAccessModifier;
 import com.uddernetworks.bfjvm.utils.ByteUtils;
 
 import java.util.Arrays;

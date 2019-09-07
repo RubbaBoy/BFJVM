@@ -4,23 +4,29 @@ import java.util.Arrays;
 import java.util.stream.Collectors;
 
 public enum BFToken {
-    ADD('+'),
-    SUB('-'),
-    LEFT('<'),
-    RIGHT('>'),
-    PRINT('.'),
-    INPUT(','),
-    LLOOP('['),
-    RLOOP(']');
+    ADD('+', true),
+    SUB('-', true),
+    LEFT('<', true),
+    RIGHT('>', true),
+    PRINT('.', false),
+    INPUT(',', false),
+    LLOOP('[', false),
+    RLOOP(']', false);
 
     private char character;
+    private boolean repeatable;
 
-    BFToken(char character) {
+    BFToken(char character, boolean repeatable) {
         this.character = character;
+        this.repeatable = repeatable;
     }
 
     public char getCharacter() {
         return character;
+    }
+
+    public boolean isRepeatable() {
+        return repeatable;
     }
 
     public static BFToken fromChar(int character) {
@@ -34,7 +40,6 @@ public enum BFToken {
     public static String getNotRegex() {
         return "[^" + Arrays.stream(values()).map(token -> "\\" + token.character).collect(Collectors.joining()) + "]";
     }
-
 
     @Override
     public String toString() {

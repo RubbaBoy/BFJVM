@@ -6,21 +6,14 @@ import com.uddernetworks.bfjvm.bytecode.chunks.fields.Fields;
 import com.uddernetworks.bfjvm.bytecode.chunks.interfase.InterfaceInfo;
 import com.uddernetworks.bfjvm.bytecode.chunks.methods.Methods;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class DefaultClassCreator implements ClassCreator {
 
     private String name;
-    private List<Byte> bytes = new ArrayList<>();
+    private ByteList byteList = new ByteList();
     private ClassInfo classInfo;
     private InterfaceInfo interfaceInfo;
     private Fields fields;
     private Methods methods;
-
-    public DefaultClassCreator() {
-
-    }
 
     @Override
     public void setName(String name) {
@@ -49,12 +42,12 @@ public class DefaultClassCreator implements ClassCreator {
 
     @Override
     public void pushByte(byte b) {
-        bytes.add(b);
+        byteList.pushByte(b);
     }
 
     @Override
     public void pushByte(int num) {
-        bytes.add((byte) num);
+        byteList.pushByte(num);
     }
 
     @Override
@@ -91,6 +84,6 @@ public class DefaultClassCreator implements ClassCreator {
         // Attributes count
         pushBytes(0x0, 0x0);
 
-        return new DefaultBytecodeClass(bytes);
+        return new DefaultBytecodeClass(byteList.toBytes());
     }
 }

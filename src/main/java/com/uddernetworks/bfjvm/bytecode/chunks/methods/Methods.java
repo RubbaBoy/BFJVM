@@ -2,7 +2,6 @@ package com.uddernetworks.bfjvm.bytecode.chunks.methods;
 
 import com.uddernetworks.bfjvm.bytecode.ByteList;
 import com.uddernetworks.bfjvm.bytecode.chunks.BytecodeChunk;
-import com.uddernetworks.bfjvm.bytecode.chunks.fields.Field;
 import com.uddernetworks.bfjvm.utils.ByteUtils;
 
 import java.util.ArrayList;

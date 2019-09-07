@@ -5,7 +5,6 @@ import com.uddernetworks.bfjvm.bytecode.chunks.BytecodeChunk;
 import com.uddernetworks.bfjvm.bytecode.chunks.constant.ClassConstant;
 import com.uddernetworks.bfjvm.utils.ByteUtils;
 
-import static com.uddernetworks.bfjvm.utils.ByteUtils.intToFlatHex;
 import static com.uddernetworks.bfjvm.utils.ConstantUtil.idOr0;
 
 public class ClassInfo implements BytecodeChunk {

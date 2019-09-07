@@ -3,7 +3,6 @@ package com.uddernetworks.bfjvm.bytecode.brainfuck;
 import com.uddernetworks.bfjvm.bytecode.chunks.constant.FieldrefConstant;
 import com.uddernetworks.bfjvm.bytecode.chunks.constant.MethodrefConstant;
 import com.uddernetworks.bfjvm.bytecode.chunks.constant.StringConstant;
-import com.uddernetworks.bfjvm.bytecode.chunks.methods.IndexAwareCode;
 
 import static com.uddernetworks.bfjvm.bytecode.chunks.methods.IndexAwareCode.get;
 import static com.uddernetworks.bfjvm.bytecode.chunks.methods.IndexAwareCode.set;
@@ -21,7 +20,7 @@ public class CodeConstructor {
     private byte[] findInLineMethod;
     private byte[] charAtMethod;
 
-    public CodeConstructor(FieldrefConstant tapeRef, FieldrefConstant indexRef, FieldrefConstant outFieldRef, MethodrefConstant printlnFieldRef, FieldrefConstant scannerRef, StringConstant periodString, MethodrefConstant findInLineMethod,  MethodrefConstant charAtMethod) {
+    public CodeConstructor(FieldrefConstant tapeRef, FieldrefConstant indexRef, FieldrefConstant outFieldRef, MethodrefConstant printlnFieldRef, FieldrefConstant scannerRef, StringConstant periodString, MethodrefConstant findInLineMethod, MethodrefConstant charAtMethod) {
         this.tapeRef = tapeRef.getId();
         this.indexRef = indexRef.getId();
         this.outFieldRef = outFieldRef.getId();
@@ -32,45 +31,53 @@ public class CodeConstructor {
         this.charAtMethod = charAtMethod.getId();
     }
 
-    public byte[] add() {
+    private byte[] loadNumber(int number) {
+        if (number <= 5) {
+            return new byte[] {(byte) (0x03 + number)}; // iconst_X
+        } else {
+           return new byte[] {bipush, (byte) number};
+        }
+    }
+
+    public byte[] add(int data) {
         return createByteArray(
                 getstatic, tapeRef,
                 getstatic, indexRef,
                 dup2,
                 baload,
-                iconst_1,
+                loadNumber(data),
                 iadd,
                 i2b,
                 bastore
         );
     }
 
-    public byte[] subtract() {
+    public byte[] subtract(int data) {
         return createByteArray(
                 getstatic, tapeRef,
                 getstatic, indexRef,
                 dup2,
                 baload,
-                iconst_1,
+                loadNumber(data),
                 isub,
                 i2b,
                 bastore
         );
     }
 
-    public byte[] moveLeft() {
+    public byte[] moveLeft(int data) {
         return createByteArray(
                 getstatic, indexRef,
-                iconst_1,
+                loadNumber(data),
                 isub,
                 putstatic, indexRef
         );
     }
 
-    public byte[] moveRight() {
+    public byte[] moveRight(int data) {
         return createByteArray(
                 getstatic, indexRef,
-                iconst_1,
+                loadNumber(data),
                 iadd,
                 putstatic, indexRef
         );

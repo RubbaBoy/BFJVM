@@ -1,7 +1,5 @@
 package com.uddernetworks.bfjvm.bytecode.chunks.methods;
 
-import java.util.Arrays;
-
 public class Instruction {
     public static final int aaload = 0x32; // load onto the stack a reference from an array
     public static final int aastore = 0x53; // store a reference in an array
